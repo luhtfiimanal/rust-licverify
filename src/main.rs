@@ -37,8 +37,7 @@ fn main() {
 
 fn run_verification(public_key_path: &str, license_path: &str) -> Result<(), LicenseError> {
     // Read public key
-    let public_key_pem =
-        std::fs::read_to_string(public_key_path).map_err(LicenseError::Io)?;
+    let public_key_pem = std::fs::read_to_string(public_key_path).map_err(LicenseError::Io)?;
 
     // Create verifier
     let verifier = Verifier::new(&public_key_pem)?;

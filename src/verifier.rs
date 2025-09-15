@@ -1,8 +1,8 @@
 use crate::error::{LicenseError, LicenseResult};
 use crate::hardware::HardwareInfo;
 use crate::license::License;
-use rsa::pkcs8::DecodePublicKey;
 use rsa::RsaPublicKey;
+use rsa::pkcs8::DecodePublicKey;
 use sha2::{Digest, Sha256};
 
 /// License verifier that handles signature and hardware binding verification
@@ -83,15 +83,16 @@ impl Verifier {
         use rsa::signature::Verifier;
 
         let payload = license.payload_bytes();
-        
+
         // Check signature length (should be 256 bytes for RSA-2048)
         if license.signature.len() != 256 {
             return Err(LicenseError::InvalidSignature);
         }
 
         // Create verifying key from our RSA public key with SHA-256
-        let verifying_key: VerifyingKey<Sha256> = VerifyingKey::new_unprefixed(self.public_key.clone());
-        
+        let verifying_key: VerifyingKey<Sha256> =
+            VerifyingKey::new_unprefixed(self.public_key.clone());
+
         // Create signature object from the license signature bytes
         let signature = Signature::try_from(license.signature.as_slice())
             .map_err(|_| LicenseError::InvalidSignature)?;

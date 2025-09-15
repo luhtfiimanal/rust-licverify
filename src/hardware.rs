@@ -109,7 +109,9 @@ impl HardwareInfo {
     /// ```
     pub fn matches_binding(&self, binding: &HardwareBinding) -> LicenseResult<()> {
         // Check MAC addresses
-        if !binding.mac_addresses.is_empty() && !contains_any(&self.mac_addresses, &binding.mac_addresses) {
+        if !binding.mac_addresses.is_empty()
+            && !contains_any(&self.mac_addresses, &binding.mac_addresses)
+        {
             return Err(LicenseError::HardwareBinding {
                 reason: "MAC address mismatch".to_string(),
             });
