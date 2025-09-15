@@ -17,7 +17,7 @@ const SIGNATURE_SIZE: usize = 256;
 ///
 /// # Example
 ///
-/// ```rust
+/// ```rust,no_run
 /// use licverify::License;
 ///
 /// let license = License::load("license.lic")?;
@@ -60,10 +60,11 @@ impl License {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```rust,no_run
     /// use licverify::License;
     ///
     /// let license = License::load("license.lic")?;
+    /// println!("License ID: {}", license.id);
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn load<P: AsRef<Path>>(path: P) -> LicenseResult<Self> {
@@ -238,11 +239,13 @@ impl License {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```rust,no_run
     /// # use licverify::License;
-    /// # let license = License::load("license.lic").unwrap_or_else(|_| panic!());
+    /// # let license = License::load("license.lic").unwrap();
     /// if license.is_expired() {
-    ///     println!("⚠️  License has expired!");
+    ///     println!("License has expired!");
+    /// } else {
+    ///     println!("License is still valid");
     /// }
     /// ```
     pub fn is_expired(&self) -> bool {
@@ -260,14 +263,14 @@ impl License {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```rust,no_run
     /// # use licverify::License;
-    /// # let license = License::load("license.lic").unwrap_or_else(|_| panic!());
-    /// let days = license.days_until_expiry();
-    /// if days > 0 {
-    ///     println!("License expires in {} days", days);
+    /// # let license = License::load("license.lic").unwrap();
+    /// let days_left = license.days_until_expiry();
+    /// if days_left > 0 {
+    ///     println!("License expires in {} days", days_left);
     /// } else {
-    ///     println!("License expired {} days ago", -days);
+    ///     println!("License expired {} days ago", -days_left);
     /// }
     /// ```
     pub fn days_until_expiry(&self) -> i64 {

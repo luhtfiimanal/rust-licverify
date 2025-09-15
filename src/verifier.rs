@@ -23,7 +23,7 @@ impl Verifier {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```rust,no_run
     /// use licverify::Verifier;
     ///
     /// let public_key_pem = std::fs::read_to_string("public.pem")?;
@@ -56,10 +56,12 @@ impl Verifier {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```rust,no_run
     /// # use licverify::Verifier;
-    /// # let verifier = Verifier::new("").unwrap_or_else(|_| panic!());
+    /// # let public_key_pem = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----";
+    /// # let verifier = Verifier::new(public_key_pem)?;
     /// let license = verifier.load_license("license.lic")?;
+    /// println!("License loaded: {}", license.id);
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn load_license<P: AsRef<std::path::Path>>(&self, path: P) -> LicenseResult<License> {
@@ -163,14 +165,16 @@ impl Verifier {
     ///
     /// # Example
     ///
-    /// ```rust
+    /// ```rust,no_run
     /// # use licverify::Verifier;
-    /// # let verifier = Verifier::new("").unwrap_or_else(|_| panic!());
-    /// # let license = verifier.load_license("license.lic").unwrap_or_else(|_| panic!());
+    /// # let public_key_pem = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----";
+    /// # let verifier = Verifier::new(public_key_pem)?;
+    /// # let license = verifier.load_license("license.lic")?;
     /// match verifier.verify(&license) {
-    ///     Ok(()) => println!("✅ License is valid!"),
-    ///     Err(e) => println!("❌ License verification failed: {}", e),
+    ///     Ok(()) => println!("License is valid!"),
+    ///     Err(e) => println!("License verification failed: {}", e),
     /// }
+    /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
     pub fn verify(&self, license: &License) -> LicenseResult<()> {
         self.verify_signature(license)?;

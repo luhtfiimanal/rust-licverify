@@ -21,7 +21,7 @@
 //!
 //! ## Quick Start
 //!
-//! ```rust
+//! ```rust,no_run
 //! use licverify::Verifier;
 //!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -44,13 +44,13 @@
 //!
 //! Prevent license sharing by binding to specific hardware:
 //!
-//! ```rust
+//! ```rust,no_run
 //! use licverify::{Verifier, HardwareInfo};
 //!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! # let public_key_pem = ""; // Mock for doctest
-//! # let verifier = Verifier::new(public_key_pem).unwrap_or_else(|_| panic!());
-//! # let license = verifier.load_license("license.lic").unwrap_or_else(|_| panic!());
+//! # let public_key_pem = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----";
+//! # let verifier = Verifier::new(public_key_pem)?;
+//! # let license = verifier.load_license("license.lic")?;
 //! // Verify hardware binding
 //! verifier.verify_hardware_binding(&license)?;
 //!
