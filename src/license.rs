@@ -289,7 +289,7 @@ mod tests {
             product_id: "product".to_string(),
             serial_number: "serial".to_string(),
             issue_date: Utc.with_ymd_and_hms(2023, 1, 1, 0, 0, 0).unwrap(),
-            expiry_date: Utc.with_ymd_and_hms(2025, 1, 1, 0, 0, 0).unwrap(),
+            expiry_date: Utc.with_ymd_and_hms(2026, 1, 1, 0, 0, 0).unwrap(),
             features: vec!["basic".to_string()],
             hardware_ids: HardwareBinding::default(),
             signature: vec![],
