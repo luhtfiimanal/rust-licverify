@@ -3,7 +3,7 @@ use crate::hardware::HardwareInfo;
 use crate::license::License;
 use rsa::RsaPublicKey;
 use rsa::pkcs8::DecodePublicKey;
-use sha2::{Digest, Sha256};
+use sha2::Sha256;
 
 /// License verifier that handles signature and hardware binding verification
 pub struct Verifier {
@@ -91,20 +91,16 @@ impl Verifier {
             return Err(LicenseError::InvalidSignature);
         }
 
-        // Create verifying key from our RSA public key with SHA-256
-        let verifying_key: VerifyingKey<Sha256> =
-            VerifyingKey::new_unprefixed(self.public_key.clone());
+        // Create verifying key from our RSA public key with SHA-256 (PKCS#1 v1.5 standard)
+        let verifying_key: VerifyingKey<Sha256> = VerifyingKey::new(self.public_key.clone());
 
         // Create signature object from the license signature bytes
         let signature = Signature::try_from(license.signature.as_slice())
             .map_err(|_| LicenseError::InvalidSignature)?;
 
-        // Hash the payload with SHA-256
-        let hash = Sha256::digest(payload);
-
-        // Verify the signature against the hash
+        // Verify signature - pass payload directly, verify() handles hashing internally
         verifying_key
-            .verify(&hash, &signature)
+            .verify(payload, &signature)
             .map_err(|_| LicenseError::InvalidSignature)?;
 
         Ok(())
